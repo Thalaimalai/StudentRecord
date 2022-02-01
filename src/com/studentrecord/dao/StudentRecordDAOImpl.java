@@ -1,34 +1,31 @@
 package com.studentrecord.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import com.studentrecord.main.*;
 import com.studentrecord.model.Admin;
 import com.studentrecord.model.Student;
 import com.studentrecord.service.StudentInformationService;
-import com.studentrecord.view.StudentRecordInformation;
 
 public class StudentRecordDAOImpl implements StudentRecordDAO {
 
-	public void insertAdminSignup(final String adminName, final String adminEmail, final String password) {
+	public void insertAdminSignup(Admin admin) {
 		boolean isEmailFound = false;
 
 		try {
 			Connection connection = StudentDatabaseConnection.getConnection();
 			Statement statement = connection.createStatement();
-			ResultSet resultset = statement.executeQuery("select adminemail from admin_records where adminemail='" + adminEmail + "'");
+			ResultSet resultset = statement.executeQuery("select adminemail from admin_records where adminemail='" + admin.getAdminEmail() + "'");
 
 			while (resultset.next()) {
 				isEmailFound = true;
 			}
 			
 			if (!isEmailFound) {
-			   	statement.executeUpdate("insert into admin_records(adminname,adminemail,password)values('" + adminName + "','" + adminEmail + "','" + password + "') ");
+			   	statement.executeUpdate("insert into admin_records(adminname,adminemail,password)values('" + admin.getAdminName() + "','" + admin.getAdminEmail() + "','" + admin.getPassword() + "') ");
 				System.out.println("New Admin added successfully.");
 			} else if (isEmailFound) {
 				System.out.println("This mail id already exists");
@@ -123,7 +120,6 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 		} catch(SQLException exception) {
 			System.out.println(exception);
 		}
-		
 	}
 
 	public void viewStudentDetails(String rollNumber) {
@@ -143,6 +139,19 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 			preparestatement.close();
 			connection.close();
             
+		} catch (SQLException exception) {
+			System.out.println(exception);
+		}
+	}
+
+	public void deleteStudentDetails(String rollNumber) {
+		try {
+			Connection connection = StudentDatabaseConnection.getConnection();
+			PreparedStatement preparestatement = connection.prepareStatement("DELETE from student_records where rollnumber ='" + rollNumber +"';");
+			preparestatement.executeUpdate();		
+			
+			preparestatement.close();
+			connection.close();
 		} catch (SQLException exception) {
 			System.out.println(exception);
 		}

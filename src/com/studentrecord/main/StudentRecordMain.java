@@ -8,8 +8,8 @@ import com.studentrecord.model.Student;
 import com.studentrecord.view.StudentRecordInformation;
 
 public class StudentRecordMain {
-	public static final Scanner SCANNER = new Scanner(System.in);
-	public static final StudentRecordController STUDENTCONTROLLER = new StudentRecordController();
+   	public static final Scanner SCANNER = new Scanner(System.in);
+	private static final StudentRecordController STUDENTCONTROLLER = new StudentRecordController();
 	private static int choice;
 
 	public static void main(String[] args) {
@@ -36,8 +36,10 @@ public class StudentRecordMain {
 		String adminName = StudentRecordInformation.getAdminName();
 		String adminEmail = StudentRecordInformation.getEmail();
 		String password = StudentRecordInformation.getPassword();
+		
+		Admin admin = new Admin(adminName, adminEmail, password);
 
-		STUDENTCONTROLLER.adminSignup(adminName, adminEmail, password);
+		STUDENTCONTROLLER.adminSignup(admin);
 	}
 
 	private static void adminLogin() {
@@ -55,7 +57,6 @@ public class StudentRecordMain {
 	}
 	
 	public static void getAdminWorks() {
-
 		System.out.println("1.Insert 2.View 3.Delete 4.Update");
 	    choice = SCANNER.nextInt();
 	    
@@ -83,7 +84,7 @@ public class StudentRecordMain {
         
         Student student = new Student(rollNumber, studentName, departmentName, email, gender, dateOfBirth, address);
         
-    //    STUDENTCONTROLLER.insertStudentDetails(student);
+        STUDENTCONTROLLER.insertStudentDetails(student);
 	}
 	
 	private static void viewStudentDetails() {
@@ -93,10 +94,9 @@ public class StudentRecordMain {
 	}
 	
     private static void deleteStudentDetails() {
-    //    int rollNumber = StudentRecordInformation.getStudentRollNumber();
+        String rollNumber = StudentRecordInformation.getStudentRollNumber();
 		
-//		STUDENTCONTROLLER.deleteStudentDetails();
-		
+		STUDENTCONTROLLER.deleteStudentDetails(rollNumber);	
 	}
     
     private static void updateStudentDetails() {

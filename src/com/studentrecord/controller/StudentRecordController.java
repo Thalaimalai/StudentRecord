@@ -2,6 +2,7 @@ package com.studentrecord.controller;
 
 import java.sql.Date;
 import com.studentrecord.main.StudentRecordMain;
+import com.studentrecord.model.Admin;
 import com.studentrecord.model.Student;
 import com.studentrecord.service.*;
 
@@ -40,8 +41,8 @@ public class StudentRecordController {
 		return STUDENT_SERVICES.validateAddress(address);
 	}
 	
-	public void adminSignup(final String adminName, final String adminEmail, final String password) {
-		STUDENT_SERVICES.insertAdminSignup(adminName, adminEmail, password);
+	public void adminSignup(Admin admin) {
+		STUDENT_SERVICES.insertAdminSignup(admin);
 	}
 
 	public void adminLogin(final String adminEmail, final String password) {
@@ -67,5 +68,9 @@ public class StudentRecordController {
 
 	public void viewStudentDetails(String rollNumber) {
 		STUDENT_SERVICES.viewStudentDetails(rollNumber);
+	}
+
+	public void deleteStudentDetails(String rollNumber) {
+		STUDENT_SERVICES.deleteStudentDetails(rollNumber);
 	}
 }

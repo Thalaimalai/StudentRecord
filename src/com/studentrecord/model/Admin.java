@@ -1,13 +1,9 @@
 package com.studentrecord.model;
 
 public class Admin {
-    private static String adminName;
-    private static String adminEmail;
-    private static String password;
- 
-    public Admin() {
-    	super();
-    }
+    private String adminName;
+    private String adminEmail;
+    private String password;
     
     public Admin(String adminName, String adminEmail, String password) {
     	this.adminName = adminName;
@@ -15,7 +11,7 @@ public class Admin {
     	this.password = password;
     }
 
-	public static String getAdminName() {
+	public String getAdminName() {
 		return adminName;
 	}
 
@@ -23,7 +19,7 @@ public class Admin {
 		this.adminName = adminName;
 	}
 
-	public static String getAdminEmail() {
+	public String getAdminEmail() {
 		return adminEmail;
 	}
 
@@ -31,7 +27,7 @@ public class Admin {
 		this.adminEmail = adminEmail;
 	}
 
-	public static String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 

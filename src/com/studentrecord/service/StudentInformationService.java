@@ -103,8 +103,8 @@ public class StudentInformationService {
 		StudentRecordController.getAdminWorks();
 	}
 
-	public void insertAdminSignup(String adminName, String adminEmail, String password) {
-		STUDENTRECORD_DAO.insertAdminSignup(adminName, adminEmail, password);
+	public void insertAdminSignup(Admin admin) {
+		STUDENTRECORD_DAO.insertAdminSignup(admin);
 	}
 
 	public void getAdminLogin(String adminEmail, String password) {
@@ -121,5 +121,9 @@ public class StudentInformationService {
 
 	public void viewStudentDetails(String rollNumber) {
 		STUDENTRECORD_DAO.viewStudentDetails(rollNumber);
+	}
+
+	public void deleteStudentDetails(String rollNumber) {
+		STUDENTRECORD_DAO.deleteStudentDetails(rollNumber);	
 	}	
 }

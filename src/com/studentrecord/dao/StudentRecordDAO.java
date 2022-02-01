@@ -1,10 +1,10 @@
 package com.studentrecord.dao;
 
+import com.studentrecord.model.Admin;
 import com.studentrecord.model.Student;
 
 public interface StudentRecordDAO {
-	
-    void insertAdminSignup(final String adminName, final String adminEmail, final String password);
+	void insertAdminSignup(Admin admin);
 	
 	void getAdminLogin(final String adminEmail, final String password);
 	
@@ -14,4 +14,5 @@ public interface StudentRecordDAO {
 
 	void viewStudentDetails(String rollNumber);
 
+	void deleteStudentDetails(String rollNumber);
 }

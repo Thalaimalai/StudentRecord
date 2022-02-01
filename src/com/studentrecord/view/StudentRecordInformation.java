@@ -1,7 +1,6 @@
 package com.studentrecord.view;
 
 import java.sql.Date;
-import java.util.Scanner;
 
 import com.studentrecord.controller.StudentRecordController;
 import com.studentrecord.main.StudentRecordMain;
