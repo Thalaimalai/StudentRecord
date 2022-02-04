@@ -1,71 +1,88 @@
 package com.studentrecord.controller;
 
 import java.sql.Date;
-import com.studentrecord.main.StudentRecordMain;
 import com.studentrecord.model.Student;
-import com.studentrecord.service.*;
+import com.studentrecord.service.StudentService;
+import com.studentrecord.service.StudentServiceDAO;
+import com.studentrecord.service.StudentServiceImpl;
+import com.studentrecord.view.StudentRecordInformation;
 
+/**
+ * <h1>StudentManagementController</h1> Controls all the requests and responses
+ * from the user and the services and vice versa.
+ * 
+ * @author ThalaimalaiPandiyanT
+ *
+ */
 public class StudentRecordController {
-	private static final StudentInformationService STUDENT_SERVICES = new StudentInformationService();
-	
-	public String adminName(String name) {
+	private static final StudentService STUDENT_SERVICES = new StudentServiceImpl();
+	private static final StudentServiceDAO SERVICE_VALIDATE = new StudentServiceDAO();
+
+	public String adminName(final String name) {
 		return STUDENT_SERVICES.validateName(name);
 	}
 
-	public String email(String email) {
+	public String email(final String email) {
 		return STUDENT_SERVICES.validateEmail(email);
 	}
 
-	public String adminPassword(String password) {
+	public String adminPassword(final String password) {
 		return STUDENT_SERVICES.validateAdminPassword(password);
 	}
-	
-	public String studentRollNumber(String rollNumber) {
+
+	public String studentRollNumber(final String rollNumber) {
 		return STUDENT_SERVICES.validateStudentRollNumber(rollNumber);
 	}
-	
-	public String departmentName(String departmentName) {
-		return STUDENT_SERVICES.validateDepatementName(departmentName);		
+
+	public String departmentName(final String departmentName) {
+		return STUDENT_SERVICES.validateDepatementName(departmentName);
 	}
 
-	public String getGender(String gender) {
+	public String studentName(final String studentName) {
+		return STUDENT_SERVICES.validateStudentName(studentName);
+	}
+
+	public String getGender(final String gender) {
 		return STUDENT_SERVICES.validateGender(gender);
 	}
 
-	public Date getDateOfBirth(String dateOfBirth) {
+	public Date getDateOfBirth(final String dateOfBirth) {
 		return STUDENT_SERVICES.validateDOB(dateOfBirth);
 	}
 
-	public String getAddress(String address) {
+	public String getAddress(final String address) {
 		return STUDENT_SERVICES.validateAddress(address);
 	}
-	
+
 	public void adminSignup(final String adminName, final String adminEmail, final String password) {
-		STUDENT_SERVICES.insertAdminSignup(adminName, adminEmail, password);
+		SERVICE_VALIDATE.insertAdminDetail(adminName, adminEmail, password);
 	}
 
 	public void adminLogin(final String adminEmail, final String password) {
-		STUDENT_SERVICES.getAdminLogin(adminEmail, password);	
+		SERVICE_VALIDATE.validateAdminDetail(adminEmail, password);
 	}
 
 	public void studentLogin(final String rollNumber, final String studentName) {
 		STUDENT_SERVICES.studentLogin(rollNumber, studentName);
 	}
-	
-	public static void getAdminWorks() {
-		StudentRecordMain.getAdminWorks();
+
+	public static void showAdminWorks() {
+		StudentRecordInformation.showAdminWorks();
 	}
 
-	public void insertStudentDetails(Student student) {
+	public void insertStudentDetails(final Student student) {
 		STUDENT_SERVICES.insertStudentDetails(student);
 	}
 
-	public String studentName(String studentName) {
-		return STUDENT_SERVICES.validateStudentName(studentName);
-	
+	public void viewStudentDetails(final String rollNumber) {
+		STUDENT_SERVICES.viewStudentDetails(rollNumber);
 	}
 
-	public void viewStudentDetails(String rollNumber) {
-		STUDENT_SERVICES.viewStudentDetails(rollNumber);
+	public void deleteStudentDetails(final String rollNumber) {
+		STUDENT_SERVICES.deleteStudentDetails(rollNumber);
+	}
+
+	public void updateStudentDetails(Student student) {
+		STUDENT_SERVICES.updateStudentDetails(student);
 	}
 }

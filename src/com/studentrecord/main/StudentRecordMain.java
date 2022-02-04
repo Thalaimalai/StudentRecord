@@ -1,105 +1,137 @@
 package com.studentrecord.main;
 
 import java.sql.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import com.studentrecord.controller.StudentRecordController;
-import com.studentrecord.model.Admin;
 import com.studentrecord.model.Student;
 import com.studentrecord.view.StudentRecordInformation;
 
+/**
+ * <h1>StudentRecordManagement</h1> The Student Record Management in which
+ * student can login to view their record which was maintained by the Management
+ * Admin that they could view, delete, insert and update to maintain the student
+ * records for the Management.
+ * 
+ * @author ThalaimalaiPandiyanT
+ *
+ */
 public class StudentRecordMain {
-	public static final Scanner SCANNER = new Scanner(System.in);
-	public static final StudentRecordController STUDENTCONTROLLER = new StudentRecordController();
-	private static int choice;
+	private static final StudentRecordController STUDENT_CONTROLLER = new StudentRecordController();
 
+	/**
+	 * The main method illustrates the login for admin and user.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
+		final Scanner scanner = new Scanner(System.in);
 		System.out.println("1.Admin Login\n2.Admin Signup\n3.StudentLogin");
-		choice = SCANNER.nextInt();
 
-		switch (choice) {
-		case 1:
-			StudentRecordMain.adminLogin();
-			break;
-		case 2:
-			StudentRecordMain.adminSignup();
-			break;
-		case 3:
-			StudentRecordMain.studentLogin();
-			break;
-		default:
-			SCANNER.close();
-			System.exit(0);
+		try {
+			int choice = scanner.nextInt();
+
+			switch (choice) {
+			case 1:
+				StudentRecordMain.adminLogin();
+				break;
+			case 2:
+				StudentRecordMain.adminSignup();
+				break;
+			case 3:
+				StudentRecordMain.studentLogin();
+				break;
+			default:
+				scanner.close();
+				System.exit(0);
+			}
+		} catch (InputMismatchException exception) {
+			System.out.println("Enter Valid Choice");
 		}
 	}
 
+	/**
+	 * Get the credential of admin to signUp for first time.
+	 */
 	private static void adminSignup() {
-		String adminName = StudentRecordInformation.getAdminName();
-		String adminEmail = StudentRecordInformation.getEmail();
-		String password = StudentRecordInformation.getPassword();
+		final String adminName = StudentRecordInformation.getAdminName();
+		final String adminEmail = StudentRecordInformation.getEmail();
+		final String password = StudentRecordInformation.getPassword();
 
-		STUDENTCONTROLLER.adminSignup(adminName, adminEmail, password);
+		STUDENT_CONTROLLER.adminSignup(adminName, adminEmail, password);
 	}
 
+	/**
+	 * Admins login to maintain the student record.
+	 */
 	private static void adminLogin() {
-		String adminEmail = StudentRecordInformation.getEmail();
-		String password = StudentRecordInformation.getPassword();
-		
-		STUDENTCONTROLLER.adminLogin(adminEmail, password);
+		final String adminEmail = StudentRecordInformation.getEmail();
+		final String password = StudentRecordInformation.getPassword();
+
+		STUDENT_CONTROLLER.adminLogin(adminEmail, password);
 	}
 
+	/**
+	 * Students login with their credential to view thier respective record.
+	 */
 	private static void studentLogin() {
-        String rollNumber = StudentRecordInformation.getStudentRollNumber();
-        String studentName = StudentRecordInformation.getStudentName();
-        
-        STUDENTCONTROLLER.studentLogin(rollNumber, studentName);
-	}
-	
-	public static void getAdminWorks() {
+		final String rollNumber = StudentRecordInformation.getStudentRollNumber();
+		final String studentName = StudentRecordInformation.getStudentName();
 
-		System.out.println("1.Insert 2.View 3.Delete 4.Update");
-	    choice = SCANNER.nextInt();
-	    
-	    if(choice == 1) {
-	    	getStudentDetails();
-	    } else if(choice == 2) {
-	    	viewStudentDetails();
-	    } else if(choice == 3) {
-	    	deleteStudentDetails();
-	    } else if (choice == 4) {
-	    	updateStudentDetails();
-	    } else {
-	    	System.out.println("Not a Valid Choice");
-	    }
+		STUDENT_CONTROLLER.studentLogin(rollNumber, studentName);
 	}
 
-	private static void getStudentDetails() {
-		String rollNumber = StudentRecordInformation.getStudentRollNumber();
-        String studentName = StudentRecordInformation.getStudentName();
-        String departmentName = StudentRecordInformation.getDepartmentName();
-        String email = StudentRecordInformation.getEmail();
-        String gender = StudentRecordInformation.getGender();
-        Date dateOfBirth = StudentRecordInformation.getDateOfBirth();
-        String address = StudentRecordInformation.getAddress();
-        
-        Student student = new Student(rollNumber, studentName, departmentName, email, gender, dateOfBirth, address);
-        
-    //    STUDENTCONTROLLER.insertStudentDetails(student);
+	/**
+	 * Get the information of students to insert.
+	 */
+	public static void insertStudentDetails() {
+		final String rollNumber = StudentRecordInformation.getStudentRollNumber();
+		final String studentName = StudentRecordInformation.getStudentName();
+		final String departmentName = StudentRecordInformation.getDepartmentName();
+		final String email = StudentRecordInformation.getEmail();
+		final String gender = StudentRecordInformation.getGender();
+		final Date dateOfBirth = StudentRecordInformation.getDateOfBirth();
+		final String address = StudentRecordInformation.getAddress();
+
+		final Student student = new Student(rollNumber, studentName, departmentName, email, gender, dateOfBirth,
+				address);
+
+		STUDENT_CONTROLLER.insertStudentDetails(student);
 	}
-	
-	private static void viewStudentDetails() {
-		String rollNumber = StudentRecordInformation.getStudentRollNumber();
-		
-		STUDENTCONTROLLER.viewStudentDetails(rollNumber);
+
+	/**
+	 * View the respective student records.
+	 */
+	public static void viewStudentDetails() {
+		final String rollNumber = StudentRecordInformation.getStudentRollNumber();
+
+		STUDENT_CONTROLLER.viewStudentDetails(rollNumber);
 	}
-	
-    private static void deleteStudentDetails() {
-    //    int rollNumber = StudentRecordInformation.getStudentRollNumber();
-		
-//		STUDENTCONTROLLER.deleteStudentDetails();
-		
+
+	/**
+	 * Delete the respective records of student.
+	 */
+	public static void deleteStudentDetails() {
+		final String rollNumber = StudentRecordInformation.getStudentRollNumber();
+
+		STUDENT_CONTROLLER.deleteStudentDetails(rollNumber);
 	}
-    
-    private static void updateStudentDetails() {
-		
+
+	/**
+	 * Update the student records.
+	 */
+	public static void updateStudentDetails() {
+		final String rollNumber = StudentRecordInformation.getStudentRollNumber();
+		final String studentName = StudentRecordInformation.getStudentName();
+		final String departmentName = StudentRecordInformation.getDepartmentName();
+		final String email = StudentRecordInformation.getEmail();
+		final String gender = StudentRecordInformation.getGender();
+		final Date dateOfBirth = StudentRecordInformation.getDateOfBirth();
+		final String address = StudentRecordInformation.getAddress();
+
+		final Student student = new Student(rollNumber, studentName, departmentName, email, gender, dateOfBirth,
+				address);
+
+		STUDENT_CONTROLLER.updateStudentDetails(student);
 	}
 }

@@ -1,7 +1,14 @@
+/**
+ * 
+ */
 package com.studentrecord.model;
 
 import java.sql.Date;
 
+/**
+ * @author ThalaimalaiPandiyanT
+ *
+ */
 public class Student {
 	private String studentRollNumber;
 	private String studentName;
@@ -10,6 +17,10 @@ public class Student {
 	private String gender;
 	private Date dateOfBirth;
 	private String address;
+	
+	public Student() {
+		super();
+	}
 
 	public Student(String rollNumber, String name, String departmentName, String email, String gender, Date dateOfBirth, String address) {
 		this.studentRollNumber = rollNumber;
@@ -21,10 +32,6 @@ public class Student {
 		this.address = address;
 	}
 	
-	public Student() {
-		super();
-	}
-
 	public String getRollNumber() {
 		return studentRollNumber;
 	}
