@@ -55,7 +55,7 @@ public class StudentServiceImpl implements StudentService {
 	 */
 	public String validateAdminPassword(final String password) {
 
-		if (!password.matches("^(?=.*[a-zA-Z0-9@#$%^&+=])(?=\\S+$).{8,}$")) {
+		if (!password.matches("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}")) {
 			System.out.println("Please Enter Valid Password");
 
 			return StudentRecordInformation.getPassword();
@@ -164,37 +164,9 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	/**
-	 * Student Login.
-	 */
-	public void studentLogin(final String rollNumber, final String studentName) {
-		STUDENTRECORD_DAO.studentLogin(rollNumber, studentName);
-	}
-
-	/**
-	 * Insert the student records.
-	 */
-	public void insertStudentDetails(final Student student) {
-		STUDENTRECORD_DAO.insertStudentDetails(student);
-	}
-
-	/**
 	 * View the student records.
 	 */
 	public void viewStudentDetails(final String rollNumber) {
 		STUDENTRECORD_DAO.viewStudentDetails(rollNumber);
-	}
-
-	/**
-	 * Delete the student records.
-	 */
-	public void deleteStudentDetails(final String rollNumber) {
-		STUDENTRECORD_DAO.deleteStudentDetails(rollNumber);
-	}
-
-	/**
-	 * Update the students records.
-	 */
-	public void updateStudentDetails(final Student student) {
-		STUDENTRECORD_DAO.updateStudentDetails(student);
 	}
 }

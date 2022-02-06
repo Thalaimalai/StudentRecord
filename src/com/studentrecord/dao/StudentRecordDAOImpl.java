@@ -36,7 +36,7 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 
 			statement.executeUpdate();
 		} catch (SQLException exception) {
-			System.out.println("Details Not Inserted");
+			System.out.println("Error Occured-Details Not Inserted");
 		}
 	}
 
@@ -46,8 +46,7 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 	 * @param Rollnumber
 	 * @param Student    name
 	 */
-	public void studentLogin(final String rollNumber, final String studentName) {
-		boolean isRecordFound = false;
+	public boolean studentLogin(final String rollNumber, final String studentName) {
 		final String studentLogin = "select * from student_records where rollnumber= '" + rollNumber + "'AND  name= '"
 				+ studentName + "'";
 
@@ -56,19 +55,12 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 				ResultSet resultset = statement.executeQuery(studentLogin);) {
 
 			while (resultset.next()) {
-				isRecordFound = true;
-				System.out.println("Login Successful");
-				System.out.println(String.format("%s %s %s %s %s %s %s", resultset.getString(1), resultset.getString(2),
-						resultset.getString(3), resultset.getString(4), resultset.getString(5), resultset.getString(6),
-						resultset.getString(7)));
-			}
-
-			if (!isRecordFound) {
-				System.out.println("Invalid Student Data");
+				return true;
 			}
 		} catch (SQLException exception) {
-			System.out.println("Record Not Found");
+			System.out.println("Error Occured-Record Not Found");
 		}
+		return false;
 	}
 
 	/**
@@ -76,7 +68,7 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 	 * 
 	 * @param Student student
 	 */
-	public void insertStudentDetails(final Student student) {
+	public boolean insertStudentDetails(final Student student) {
 		final String insertQuery = "insert into student_records values(?,?,?,?,?,?,?)";
 
 		try (Connection connection = DatabaseConnection.getConnection();
@@ -94,6 +86,7 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 		} catch (SQLException exception) {
 			System.out.println("Student Record Not Inserted");
 		}
+		return true;
 	}
 
 	/**
@@ -101,7 +94,7 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 	 * 
 	 * @param Rollnumber
 	 */
-	public void viewStudentDetails(final String rollNumber) {
+	public boolean viewStudentDetails(final String rollNumber) {
 		final String viewQuery = "select * from student_records where rollnumber ='" + rollNumber + "'";
 
 		try (Connection connection = DatabaseConnection.getConnection();
@@ -116,6 +109,7 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 		} catch (SQLException exception) {
 			System.out.println("Error-Details Not Shown");
 		}
+		return true;
 	}
 
 	/**
@@ -123,16 +117,18 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 	 * 
 	 * @param Rollnumber
 	 */
-	public void deleteStudentDetails(String rollNumber) {
+	public boolean deleteStudentDetails(String rollNumber) {
 		final String deleteQuery = "DELETE from student_records where rollnumber =?";
 
 		try (Connection connection = DatabaseConnection.getConnection();
 				PreparedStatement preparestatement = connection.prepareStatement(deleteQuery);) {
+			preparestatement.setString(1, rollNumber );
 
 			preparestatement.executeUpdate();
 		} catch (SQLException exception) {
-			System.out.println("Record Not Deleted");
+			System.out.println(exception);
 		}
+		return true;
 	}
 
 	/**
@@ -140,7 +136,7 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 	 * 
 	 * @param Student student
 	 */
-	public void updateStudentDetails(Student student) {
+	public boolean updateStudentDetails(Student student) {
 		final String updateQuery = "UPDATE student_records SET name=?, departmentname=?, email=?, gender=?, dateofbirth=?, address=? where rollnumber=? ";
 
 		try (Connection connection = DatabaseConnection.getConnection();
@@ -158,6 +154,7 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 		} catch (SQLException exception) {
 			System.out.println("Record Not Updated");
 		}
+		return true;
 	}
 
 	/**
@@ -173,7 +170,6 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 
 			while (resultset.next()) {
 				String emails = resultset.getString(2);
-
 				adminEmailList.add(emails);
 			}
 		} catch (Exception exception) {

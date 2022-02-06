@@ -9,7 +9,7 @@ import com.studentrecord.view.StudentRecordInformation;
 
 /**
  * <h1>StudentManagementController</h1> Controls all the requests and responses
- * from the user and the services and vice versa.
+ * from the user to the services and vice versa.
  * 
  * @author ThalaimalaiPandiyanT
  *
@@ -63,7 +63,7 @@ public class StudentRecordController {
 	}
 
 	public void studentLogin(final String rollNumber, final String studentName) {
-		STUDENT_SERVICES.studentLogin(rollNumber, studentName);
+		SERVICE_VALIDATE.studentLogin(rollNumber, studentName);
 	}
 
 	public static void showAdminWorks() {
@@ -71,7 +71,7 @@ public class StudentRecordController {
 	}
 
 	public void insertStudentDetails(final Student student) {
-		STUDENT_SERVICES.insertStudentDetails(student);
+		SERVICE_VALIDATE.insertStudentDetails(student);
 	}
 
 	public void viewStudentDetails(final String rollNumber) {
@@ -79,10 +79,10 @@ public class StudentRecordController {
 	}
 
 	public void deleteStudentDetails(final String rollNumber) {
-		STUDENT_SERVICES.deleteStudentDetails(rollNumber);
+		SERVICE_VALIDATE.deleteStudentDetails(rollNumber);
 	}
 
 	public void updateStudentDetails(Student student) {
-		STUDENT_SERVICES.updateStudentDetails(student);
+		SERVICE_VALIDATE.updateStudentDetails(student);
 	}
 }

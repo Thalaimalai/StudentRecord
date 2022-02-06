@@ -3,7 +3,6 @@ package com.studentrecord.view;
 import java.sql.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
 import com.studentrecord.controller.StudentRecordController;
 import com.studentrecord.main.StudentRecordMain;
 
@@ -14,7 +13,7 @@ import com.studentrecord.main.StudentRecordMain;
  *
  */
 public class StudentRecordInformation {
-	private final static Scanner SCANNER = new Scanner(System.in);
+	public final static Scanner SCANNER = new Scanner(System.in);
 	private static final StudentRecordController STUDENTRECORD_CONTROLLER = new StudentRecordController();
 
 	/**
@@ -112,24 +111,28 @@ public class StudentRecordInformation {
 	 */
 
 	public static void showAdminWorks() {
-		System.out.println("1.Insert 2.View 3.Delete 4.Update");
 		
-		try {
-			int choice = Integer.parseInt(StudentRecordInformation.SCANNER.nextLine());
-	    
-			if(choice == 1) {
-				StudentRecordMain.insertStudentDetails();
-			} else if(choice == 2) {
-				StudentRecordMain.viewStudentDetails();
-			} else if(choice == 3) {
-				StudentRecordMain.deleteStudentDetails();
-			} else if (choice == 4) {
-				StudentRecordMain.updateStudentDetails();
-			} else {
-				System.out.println("Not a Valid Choice");
+		do {
+			System.out.println("1.Insert 2.View 3.Delete 4.Update");
+
+			try {
+				int choice = Integer.parseInt(StudentRecordInformation.SCANNER.nextLine());
+
+				if (choice == 1) {
+					StudentRecordMain.insertStudentDetails();
+				} else if (choice == 2) {
+					StudentRecordMain.viewStudentDetails();
+				} else if (choice == 3) {
+					StudentRecordMain.deleteStudentDetails();
+				} else if (choice == 4) {
+					StudentRecordMain.updateStudentDetails();
+				} else {
+					SCANNER.close();
+					System.exit(0);
+				}
+			} catch (InputMismatchException exception) {
+				System.out.println("Enter Valid Choice");
 			}
-		} catch(InputMismatchException exception) {
-			System.out.println("Enter Valid Choice");
-		}
-	}	
+		} while (true);
+	}
 }

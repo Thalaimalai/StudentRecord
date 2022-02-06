@@ -4,15 +4,15 @@ import java.util.List;
 import com.studentrecord.model.Student;
 
 public interface StudentRecordDAO {
-	void studentLogin(final String rollNumber, final String studentName);
+	boolean studentLogin(final String rollNumber, final String studentName);
 
-	void insertStudentDetails(final Student student);
+	boolean insertStudentDetails(final Student student);
 
-	void viewStudentDetails(final String rollNumber);
+	boolean viewStudentDetails(final String rollNumber);
 
-	void deleteStudentDetails(final String rollNumber);
+	boolean deleteStudentDetails(final String rollNumber);
 
-	void updateStudentDetails(final Student student);
+	boolean updateStudentDetails(final Student student);
 	
 	void insertAdminSignup(final String adminName, final String adminEmail, final String password);	
 	

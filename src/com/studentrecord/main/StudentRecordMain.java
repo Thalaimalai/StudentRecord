@@ -2,7 +2,6 @@ package com.studentrecord.main;
 
 import java.sql.Date;
 import java.util.InputMismatchException;
-import java.util.Scanner;
 import com.studentrecord.controller.StudentRecordController;
 import com.studentrecord.model.Student;
 import com.studentrecord.view.StudentRecordInformation;
@@ -25,11 +24,10 @@ public class StudentRecordMain {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		final Scanner scanner = new Scanner(System.in);
-		System.out.println("1.Admin Login\n2.Admin Signup\n3.StudentLogin");
+		System.out.println("1.Admin Login\n2.Admin Signup\n3.StudentLogin\nEnter Your Choice ");
 
 		try {
-			int choice = scanner.nextInt();
+			int choice = Integer.parseInt(StudentRecordInformation.SCANNER.nextLine());
 
 			switch (choice) {
 			case 1:
@@ -42,7 +40,7 @@ public class StudentRecordMain {
 				StudentRecordMain.studentLogin();
 				break;
 			default:
-				scanner.close();
+				StudentRecordInformation.SCANNER.close();
 				System.exit(0);
 			}
 		} catch (InputMismatchException exception) {
@@ -51,7 +49,7 @@ public class StudentRecordMain {
 	}
 
 	/**
-	 * Get the credential of admin to signUp for first time.
+	 * Get the credential of admin to signUp for the first time.
 	 */
 	private static void adminSignup() {
 		final String adminName = StudentRecordInformation.getAdminName();
@@ -129,8 +127,7 @@ public class StudentRecordMain {
 		final Date dateOfBirth = StudentRecordInformation.getDateOfBirth();
 		final String address = StudentRecordInformation.getAddress();
 
-		final Student student = new Student(rollNumber, studentName, departmentName, email, gender, dateOfBirth,
-				address);
+		final Student student = new Student(rollNumber, studentName, departmentName, email, gender, dateOfBirth, address);
 
 		STUDENT_CONTROLLER.updateStudentDetails(student);
 	}

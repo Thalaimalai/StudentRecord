@@ -1,22 +1,9 @@
-/**
- * 
- */
 package com.studentrecord.service;
 
 import java.sql.Date;
 
-import com.studentrecord.model.Student;
-
 public interface StudentService {
-	void studentLogin(final String rollNumber, final String studentName);
-
-	void insertStudentDetails(final Student student);
-
 	void viewStudentDetails(final String rollNumber);
-
-	void deleteStudentDetails(final String rollNumber);
-
-	void updateStudentDetails(final Student student);
 
 	String validateName(final String name);
 

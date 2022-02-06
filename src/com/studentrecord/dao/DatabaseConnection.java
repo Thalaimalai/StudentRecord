@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.studentrecord.dao;
 
 import java.sql.Connection;
@@ -24,8 +21,14 @@ public class DatabaseConnection {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static Connection getConnection() throws SQLException {
-		Connection connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
+	public static Connection getConnection() {
+		Connection connection = null;
+		
+		try {
+			connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
+		} catch (Exception exception) {
+			System.out.println(exception);
+		}
 		return connection;
 	}
 }
