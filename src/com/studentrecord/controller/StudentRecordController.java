@@ -16,7 +16,7 @@ import com.studentrecord.view.StudentRecordInformation;
  */
 public class StudentRecordController {
 	private static final StudentService STUDENT_SERVICES = new StudentServiceImpl();
-	private static final StudentServiceDAO SERVICE_VALIDATE = new StudentServiceDAO();
+	private static final StudentServiceDAO SERVICE_DAO = new StudentServiceDAO();
 
 	public String adminName(final String name) {
 		return STUDENT_SERVICES.validateName(name);
@@ -35,7 +35,7 @@ public class StudentRecordController {
 	}
 
 	public String departmentName(final String departmentName) {
-		return STUDENT_SERVICES.validateDepatementName(departmentName);
+		return STUDENT_SERVICES.validateDepartmentName(departmentName);
 	}
 
 	public String studentName(final String studentName) {
@@ -55,15 +55,15 @@ public class StudentRecordController {
 	}
 
 	public void adminSignup(final String adminName, final String adminEmail, final String password) {
-		SERVICE_VALIDATE.insertAdminDetail(adminName, adminEmail, password);
+		SERVICE_DAO.insertAdminDetail(adminName, adminEmail, password);
 	}
 
 	public void adminLogin(final String adminEmail, final String password) {
-		SERVICE_VALIDATE.validateAdminDetail(adminEmail, password);
+		SERVICE_DAO.validateAdminDetail(adminEmail, password);
 	}
 
 	public void studentLogin(final String rollNumber, final String studentName) {
-		SERVICE_VALIDATE.studentLogin(rollNumber, studentName);
+		SERVICE_DAO.studentLogin(rollNumber, studentName);
 	}
 
 	public static void showAdminWorks() {
@@ -71,7 +71,7 @@ public class StudentRecordController {
 	}
 
 	public void insertStudentDetails(final Student student) {
-		SERVICE_VALIDATE.insertStudentDetails(student);
+		SERVICE_DAO.insertStudentDetails(student);
 	}
 
 	public void viewStudentDetails(final String rollNumber) {
@@ -79,10 +79,10 @@ public class StudentRecordController {
 	}
 
 	public void deleteStudentDetails(final String rollNumber) {
-		SERVICE_VALIDATE.deleteStudentDetails(rollNumber);
+		SERVICE_DAO.deleteStudentDetails(rollNumber);
 	}
 
 	public void updateStudentDetails(Student student) {
-		SERVICE_VALIDATE.updateStudentDetails(student);
+		SERVICE_DAO.updateStudentDetails(student);
 	}
 }

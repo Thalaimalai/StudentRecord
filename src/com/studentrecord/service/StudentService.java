@@ -15,7 +15,7 @@ public interface StudentService {
 
 	String validateStudentName(final String studentName);
 
-	String validateDepatementName(final String departmentName);
+	String validateDepartmentName(final String departmentName);
 
 	String validateGender(final String gender);
 

@@ -35,6 +35,7 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 			statement.setString(3, password);
 
 			statement.executeUpdate();
+			
 		} catch (SQLException exception) {
 			System.out.println("Error Occured-Details Not Inserted");
 		}
@@ -83,6 +84,7 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 			preparestatement.setString(7, student.getAddress());
 
 			preparestatement.executeUpdate();
+			
 		} catch (SQLException exception) {
 			System.out.println("Student Record Not Inserted");
 		}
@@ -125,6 +127,7 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 			preparestatement.setString(1, rollNumber );
 
 			preparestatement.executeUpdate();
+			
 		} catch (SQLException exception) {
 			System.out.println(exception);
 		}
@@ -151,6 +154,7 @@ public class StudentRecordDAOImpl implements StudentRecordDAO {
 			preparestatement.setString(7, student.getRollNumber());
 
 			preparestatement.executeUpdate();
+			
 		} catch (SQLException exception) {
 			System.out.println("Record Not Updated");
 		}

@@ -1,14 +1,7 @@
-/**
- * 
- */
 package com.studentrecord.model;
 
 import java.sql.Date;
 
-/**
- * @author ThalaimalaiPandiyanT
- *
- */
 public class Student {
 	private String studentRollNumber;
 	private String studentName;

@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import com.studentrecord.controller.StudentRecordController;
 import com.studentrecord.dao.StudentRecordDAO;
 import com.studentrecord.dao.StudentRecordDAOImpl;
-import com.studentrecord.model.Student;
 import com.studentrecord.view.StudentRecordInformation;
 
 /**
@@ -98,7 +97,7 @@ public class StudentServiceImpl implements StudentService {
 	 * 
 	 * @param Department name
 	 */
-	public String validateDepatementName(final String departmentName) {
+	public String validateDepartmentName(final String departmentName) {
 
 		if (!departmentName.matches("^[a-zA-Z\\s]*$")) {
 			System.out.println("Please Enter Valid Department");
@@ -159,6 +158,9 @@ public class StudentServiceImpl implements StudentService {
 		return address;
 	}
 
+	/**
+	 * Send admin duties to the controller.
+	 */
 	public static void showAdminWorks() {
 		StudentRecordController.showAdminWorks();
 	}

@@ -6,8 +6,7 @@ import com.studentrecord.dao.StudentRecordDAOImpl;
 import com.studentrecord.model.Student;
 
 /**
- * <h1>StudentServiceDAO
- * <h1>
+ * <h1>StudentServiceDAO</h1>
  * 
  * @author ThalaimalaiPandiyanT
  *
