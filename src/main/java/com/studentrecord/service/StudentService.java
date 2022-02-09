@@ -1,7 +1,5 @@
 package com.studentrecord.service;
 
-import java.sql.Date;
-
 public interface StudentService {
 	boolean validateName(final String name);
 
@@ -15,7 +13,7 @@ public interface StudentService {
 
 	boolean validateGender(final String gender);
 
-	Date validateDOB(final String dateOfBirth);
+	boolean validateDOB(final String dateOfBirth);
 
 	boolean validateAddress(final String address);
 }

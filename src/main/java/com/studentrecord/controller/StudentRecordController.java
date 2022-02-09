@@ -1,6 +1,5 @@
 package com.studentrecord.controller;
 
-import java.sql.Date;
 import com.studentrecord.model.Student;
 import com.studentrecord.service.StudentService;
 import com.studentrecord.service.StudentServiceDAO;
@@ -42,7 +41,7 @@ public class StudentRecordController {
 		return STUDENT_SERVICES.validateGender(gender);
 	}
 
-	public Date dateOfBirth(final String dateOfBirth) {
+	public boolean dateOfBirth(final String dateOfBirth) {
 		return STUDENT_SERVICES.validateDOB(dateOfBirth);
 	}
 

@@ -1,6 +1,5 @@
 package com.studentrecord.main;
 
-import java.util.InputMismatchException;
 import com.studentrecord.view.StudentRecordInformation;
 
 /**
@@ -39,7 +38,7 @@ public class StudentRecordMain {
 				StudentRecordInformation.SCANNER.close();
 				System.exit(0);
 			}
-		} catch (InputMismatchException exception) {
+		} catch (NumberFormatException exception) {
 			System.out.println("Enter Valid Choice");
 		}
 	}

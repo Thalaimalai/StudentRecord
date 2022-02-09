@@ -1,7 +1,6 @@
 package com.studentrecord.view;
 
 import java.sql.Date;
-import java.util.InputMismatchException;
 import com.studentrecord.controller.StudentRecordController;
 import com.studentrecord.exception.CustomException;
 import com.studentrecord.exception.CustomException.RecordNotfoundException;
@@ -34,7 +33,7 @@ public class StudentInformation {
 					StudentRecordInformation.SCANNER.close();
 					System.exit(0);
 				}
-			} catch (InputMismatchException exception) {
+			} catch (NumberFormatException exception) {
 				System.out.println("Enter Valid Choice");
 			}
 		} while (true);
@@ -68,7 +67,7 @@ public class StudentInformation {
 	/**
 	 * View the respective student records.
 	 */
-	public static void viewStudentDetails() {
+	private static void viewStudentDetails() {
 		final String rollNumber = StudentRecordInformation.getStudentRollNumber();
 		
 		try {
@@ -83,7 +82,7 @@ public class StudentInformation {
 	 * 
 	 * @param student
 	 */
-	public static void showDetails(Student student) {
+	public static void showDetails(final Student student) {
         System.out.println(student);
     }
 
@@ -129,4 +128,3 @@ public class StudentInformation {
 		}
 	}
 }
-

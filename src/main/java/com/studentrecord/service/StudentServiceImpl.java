@@ -1,12 +1,7 @@
 package com.studentrecord.service;
 
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import com.studentrecord.controller.StudentRecordController;
-import com.studentrecord.dao.StudentRecordDAO;
-import com.studentrecord.dao.StudentRecordDAOImpl;
-import com.studentrecord.view.StudentRecordInformation;
+import java.time.LocalDate;
+import com.studentrecord.exception.CustomException.DateNotValidException;
 
 /**
  * <h1>StudentRecordServiceImpl</h>
@@ -23,7 +18,7 @@ public class StudentServiceImpl implements StudentService {
 	 */
 	public boolean validateName(final String name) {
 
-		if (!name.matches("^[a-zA-Z+\\s]*$")) {
+		if (!name.matches("^.*[A-Z][a-zA-Z+\\s]*$")) {
 			System.out.println("Please Enter Valid Name");
 			
 			return false;
@@ -117,20 +112,20 @@ public class StudentServiceImpl implements StudentService {
 	 * 
 	 * @param DOB
 	 */
-	public Date validateDOB(final String dateOfBirth) {
-		Date sqlDate;
+	public boolean validateDOB(final String dateOfBirth) {
 
 		try {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			dateFormat.setLenient(false);
-			java.util.Date date = dateFormat.parse(dateOfBirth);
-			sqlDate = new Date(date.getTime());
+			final LocalDate dateParse = LocalDate.parse(dateOfBirth);
+			final LocalDate todayDate = LocalDate.now();
+			
+			if (todayDate.isAfter(dateParse)) {
+				return true;
+			} else {
+				return false;
+			}
 		} catch (Exception exception) {
-			System.out.println("Please enter valid date");
-
-			return StudentRecordInformation.getDateOfBirth();
+			throw new DateNotValidException("Invalid Date");
 		}
-		return sqlDate;
 	}
 
 	/**

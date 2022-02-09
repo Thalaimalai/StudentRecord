@@ -81,11 +81,8 @@ public class Student {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
+	
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(studentRollNumber).append(" ").append(studentName).append(" ").append(departmentName).append(" ").append(email)
-				.append(" ").append(gender).append(" ").append(dateOfBirth).append("").append(address);
-		return builder.toString();
+		return String.format("%s %s %s %s %s %s %s", studentRollNumber, studentName, departmentName, email, gender, dateOfBirth, address);
 	}
 }

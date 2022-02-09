@@ -1,12 +1,9 @@
 package com.studentrecord.view;
 
 import java.sql.Date;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import com.studentrecord.controller.StudentRecordController;
 import com.studentrecord.exception.CustomException;
-import com.studentrecord.exception.CustomException.RecordNotfoundException;
-import com.studentrecord.model.Student;
 
 /**
  * Get all information from the users.
@@ -27,7 +24,6 @@ public class StudentRecordInformation {
 	public static String getName() {
 		System.out.println("Enter Name:");
 		final String name = StudentRecordInformation.SCANNER.nextLine();
-
 		final boolean isValidName = STUDENTRECORD_CONTROLLER.name(name);
 
 		if (isValidName) {
@@ -45,7 +41,6 @@ public class StudentRecordInformation {
 	public static String getEmail() {
 		System.out.println("Enter Email:");
 		final String email = StudentRecordInformation.SCANNER.nextLine();
-
 		final boolean isValidEmail = STUDENTRECORD_CONTROLLER.email(email);
 
 		if (isValidEmail) {
@@ -63,7 +58,6 @@ public class StudentRecordInformation {
 	private static String getPassword() {
 		System.out.println("Enter Admin Password:");
 		final String password = StudentRecordInformation.SCANNER.nextLine();
-
 		final boolean isValidPassword = STUDENTRECORD_CONTROLLER.adminPassword(password);
 
 		if (isValidPassword) {
@@ -81,7 +75,6 @@ public class StudentRecordInformation {
 	public static String getStudentRollNumber() {
 		System.out.println("Enter Student Roll Number");
 		final String rollNumber = StudentRecordInformation.SCANNER.nextLine();
-
 		final boolean isValidRollNumber = STUDENTRECORD_CONTROLLER.studentRollNumber(rollNumber);
 
 		if (isValidRollNumber) {
@@ -99,7 +92,6 @@ public class StudentRecordInformation {
 	public static String getDepartmentName() {
 		System.out.println("Enter Department Name");
 		final String departmentName = StudentRecordInformation.SCANNER.nextLine();
-
 		final boolean isValidDepartmentName = STUDENTRECORD_CONTROLLER.departmentName(departmentName);
 
 		if (isValidDepartmentName) {
@@ -117,7 +109,6 @@ public class StudentRecordInformation {
 	public static String getGender() {
 		System.out.println("Enter Student Gender");
 		final String gender = StudentRecordInformation.SCANNER.nextLine();
-
 		final boolean isValidGender = STUDENTRECORD_CONTROLLER.gender(gender);
 
 		if (isValidGender) {
@@ -134,7 +125,21 @@ public class StudentRecordInformation {
 	 */
 	public static Date getDateOfBirth() {
 		System.out.println("Enter Student Date-of-Birth (yyyy-MM-dd)");
-		return STUDENTRECORD_CONTROLLER.dateOfBirth(StudentRecordInformation.SCANNER.nextLine());
+		final String date = StudentRecordInformation.SCANNER.nextLine();
+		boolean isValidDate = false;
+		
+		try {
+			isValidDate = STUDENTRECORD_CONTROLLER.dateOfBirth(date);
+		} catch (CustomException exception) {
+			System.out.println(exception);
+		}
+		
+		if (isValidDate) {
+			return Date.valueOf(date);
+		} else {
+			System.out.println("Enter Valid Date");
+			return StudentRecordInformation.getDateOfBirth();
+		}
 	}
 
 	/**
@@ -145,7 +150,6 @@ public class StudentRecordInformation {
 	public static String getAddress() {
 		System.out.println("Enter Student Address");
 		final String address = StudentRecordInformation.SCANNER.nextLine();
-
 		final boolean isValidAddress = STUDENTRECORD_CONTROLLER.address(address);
 
 		if (isValidAddress) {
@@ -183,7 +187,7 @@ public class StudentRecordInformation {
 		final String password = StudentRecordInformation.getPassword();
 		
 		try {
-			boolean isLogin = STUDENTRECORD_CONTROLLER.adminLogin(adminEmail, password);
+			final boolean isLogin = STUDENTRECORD_CONTROLLER.adminLogin(adminEmail, password);
 		
 			if (isLogin) {
 				System.out.println("Log in Successfully");
@@ -202,7 +206,7 @@ public class StudentRecordInformation {
 		final String studentName = StudentRecordInformation.getName();
 
 		try {
-			boolean isLogin = STUDENTRECORD_CONTROLLER.studentLogin(rollNumber, studentName);
+			final boolean isLogin = STUDENTRECORD_CONTROLLER.studentLogin(rollNumber, studentName);
 			
 			if (isLogin) {
 				System.out.println("Login Successfully");

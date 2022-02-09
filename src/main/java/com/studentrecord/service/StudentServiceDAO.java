@@ -1,9 +1,8 @@
 package com.studentrecord.service;
 
-import com.studentrecord.controller.StudentRecordController;
 import com.studentrecord.exception.CustomException.*;
-import com.studentrecord.dao.StudentRecordDAO;
-import com.studentrecord.dao.StudentRecordDAOImpl;
+import com.studentrecord.dao.StudentDAO;
+import com.studentrecord.dao.StudentDAOImpl;
 import com.studentrecord.model.Student;
 
 /**
@@ -13,7 +12,8 @@ import com.studentrecord.model.Student;
  *
  */
 public class StudentServiceDAO {
-	private final StudentRecordDAO STUDENTRECORD_DAO = new StudentRecordDAOImpl();
+
+	private final StudentDAO STUDENTRECORD_DAO = new StudentDAOImpl();
 
 	/**
 	 * Check the existing admin emails.
@@ -21,13 +21,12 @@ public class StudentServiceDAO {
 	 * @param adminName
 	 * @param adminEmail
 	 * @param password
-	 * @return password
 	 */
 	public boolean insertAdminDetail(final String adminName, final String adminEmail, final String password) {
 
 		if (!STUDENTRECORD_DAO.selectAdminEmail().contains(adminEmail)) {
-			boolean isInserted = STUDENTRECORD_DAO.insertAdminDetails(adminName, adminEmail, password);
-			
+			final boolean isInserted = STUDENTRECORD_DAO.insertAdminDetails(adminName, adminEmail, password);
+
 			if (isInserted) {
 				return true;
 			}
@@ -40,7 +39,6 @@ public class StudentServiceDAO {
 	 * 
 	 * @param adminEmail
 	 * @param password
-	 * @return 
 	 */
 	public boolean validateAdminDetail(final String adminEmail, final String password) {
 
@@ -56,29 +54,26 @@ public class StudentServiceDAO {
 	 * 
 	 * @param rollNumber
 	 * @param studentName
-	 * @return 
 	 */
 	public boolean studentLogin(final String rollNumber, final String studentName) {
-		boolean isLogin = STUDENTRECORD_DAO.studentLogin(rollNumber, studentName); 
-		
-		if(isLogin) {
+		final boolean isLogin = STUDENTRECORD_DAO.studentLogin(rollNumber, studentName);
+
+		if (isLogin) {
 			return true;
-		}
-		else {
+		} else {
 			throw new RecordNotfoundException("Record Not Found");
-        }
+		}
 	}
 
 	/**
 	 * Insert student details.
 	 * 
 	 * @param student
-	 * @return 
 	 */
-	public boolean insertStudentDetails(Student student) {
+	public boolean insertStudentDetails(final Student student) {
 		final boolean isInserted = STUDENTRECORD_DAO.insertStudentDetails(student);
-		
-		if(isInserted) {
+
+		if (isInserted) {
 			return true;
 		}
 		throw new RollNumberAlreadyFoundException("RollNumber Already Exist");
@@ -88,46 +83,41 @@ public class StudentServiceDAO {
 	 * Delete student details.
 	 * 
 	 * @param rollNumber
-	 * @return 
 	 */
-	public boolean deleteStudentDetails(String rollNumber) {
-
+	public boolean deleteStudentDetails(final String rollNumber) {
 		final boolean isRemoved = STUDENTRECORD_DAO.deleteStudentDetails(rollNumber);
-		
-		if(isRemoved) {
+
+		if (isRemoved) {
 			return true;
-		} 
-		throw new RecordNotfoundException ("Record Not Found");
+		}
+		throw new RecordNotfoundException("Record Not Found");
 	}
 
 	/**
 	 * Update student details.
 	 * 
 	 * @param student
-	 * @return 
 	 */
-	public boolean updateStudentDetails(Student student) {
-
+	public boolean updateStudentDetails(final Student student) {
 		final boolean isUpdated = STUDENTRECORD_DAO.updateStudentDetails(student);
-		
-		if(isUpdated) {
+
+		if (isUpdated) {
 			return true;
-		} 
-		throw new RecordNotfoundException ("Record Not Found");
+		}
+		throw new RecordNotfoundException("Record Not Found");
 	}
 
 	/**
 	 * Get student detail.
 	 * 
 	 * @param rollNumber
-	 * @return
 	 */
 	public Student selectStudentDetail(String rollNumber) {
-		
+
 		if (STUDENTRECORD_DAO.getAllStudents().containsKey(rollNumber)) {
-            return STUDENTRECORD_DAO.selectStudentDetail(rollNumber);
-        } else {
+			return STUDENTRECORD_DAO.selectStudentDetail(rollNumber);
+		} else {
 			throw new RecordNotfoundException("Record Not Found");
-        }
+		}
 	}
 }
