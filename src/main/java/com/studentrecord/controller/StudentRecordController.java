@@ -73,7 +73,7 @@ public class StudentRecordController {
 		return STUDENT_SERVICE_DAO.deleteStudentDetails(rollNumber);
 	}
 
-	public boolean updateStudentDetails(Student student) {
+	public boolean updateStudentDetails(final Student student) {
 		return STUDENT_SERVICE_DAO.updateStudentDetails(student);
 	}
 }
