@@ -3,10 +3,11 @@ package com.studentrecord.controller;
 import com.studentrecord.model.Student;
 import com.studentrecord.service.StudentService;
 import com.studentrecord.service.StudentServiceDAO;
+import com.studentrecord.service.StudentServiceDAOImpl;
 import com.studentrecord.service.StudentServiceImpl;
 
 /**
- * <h1>StudentManagementController</h1> Controls all the requests and responses
+ * StudentManagementController. Controls all the requests and responses
  * from the user to the services and vice versa.
  * 
  * @author ThalaimalaiPandiyanT
@@ -15,8 +16,12 @@ import com.studentrecord.service.StudentServiceImpl;
 public class StudentRecordController {
 	
 	private static final StudentService STUDENT_SERVICES = new StudentServiceImpl();
-	private static final StudentServiceDAO STUDENT_SERVICE_DAO = new StudentServiceDAO();
-
+	private static final StudentServiceDAO STUDENT_SERVICE_DAO = new StudentServiceDAOImpl();
+	
+	public boolean choice(final String choice) {
+		return STUDENT_SERVICES.validateChoice(choice);
+	}
+	
 	public boolean name(final String name) {
 		return STUDENT_SERVICES.validateName(name);
 	}
@@ -49,6 +54,10 @@ public class StudentRecordController {
 		return STUDENT_SERVICES.validateAddress(address);
 	}
 	
+	public boolean grade(final String grade) {
+		return STUDENT_SERVICES.validateGrade(grade);
+	}
+	
 	public boolean adminSignup(final String adminName, final String adminEmail, final String password) {
 		return STUDENT_SERVICE_DAO.insertAdminDetail(adminName, adminEmail, password);
 	}
@@ -75,5 +84,9 @@ public class StudentRecordController {
 
 	public boolean updateStudentDetails(final Student student) {
 		return STUDENT_SERVICE_DAO.updateStudentDetails(student);
+	}
+
+	public boolean checkRollNumber(final String rollNumber) {
+		return STUDENT_SERVICE_DAO.checkRollNumber(rollNumber);
 	}
 }

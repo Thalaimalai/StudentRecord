@@ -10,13 +10,14 @@ public class Student {
 	private String gender;
 	private Date dateOfBirth;
 	private String address;
+	private String grade;
 
 	public Student() {
 		super();
 	}
 
 	public Student(String rollNumber, String name, String departmentName, String email, String gender, Date dateOfBirth,
-			String address) {
+			String address, String grade) {
 		this.studentRollNumber = rollNumber;
 		this.studentName = name;
 		this.departmentName = departmentName;
@@ -24,6 +25,7 @@ public class Student {
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
 		this.address = address;
+		this.grade = grade;
 	}
 
 	public String getRollNumber() {
@@ -81,8 +83,18 @@ public class Student {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+
 	public String toString() {
-		return String.format("%s %s %s %s %s %s %s", studentRollNumber, studentName, departmentName, email, gender, dateOfBirth, address);
+		return String.format("%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s", "\nRollNumber:", studentRollNumber,
+				"\nName:", studentName, "\nDeptName:", departmentName, "\nEmail:", email, "\nGender:", gender, "\nDob:",
+				dateOfBirth, "\nAddress:", address, "\nGrade:", grade);
 	}
 }

@@ -13,9 +13,9 @@ public class CustomException extends RuntimeException {
 		}
 	}
 
-	public static class RollNumberAlreadyFoundException extends CustomException {
+	public static class RollNumberAlreadyExistException extends CustomException {
 
-		public RollNumberAlreadyFoundException(String msg) {
+		public RollNumberAlreadyExistException(String msg) {
 			super(msg);
 		}
 	}

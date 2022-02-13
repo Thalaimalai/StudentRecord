@@ -2,7 +2,6 @@ package com.studentrecord.dao;
 
 import java.util.List;
 import java.util.Map;
-
 import com.studentrecord.model.Student;
 
 public interface StudentDAO {
@@ -21,4 +20,6 @@ public interface StudentDAO {
 	List<String> selectAdminEmail();
 
 	Map<String, Student> getAllStudents();
+
+	boolean loginAdmin(String adminEmail, String password);
 }

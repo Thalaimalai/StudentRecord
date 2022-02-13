@@ -16,5 +16,9 @@ public interface StudentService {
 	boolean validateDOB(final String dateOfBirth);
 
 	boolean validateAddress(final String address);
+
+	boolean validateChoice(final String choice);
+
+	boolean validateGrade(final String grade);
 }
 

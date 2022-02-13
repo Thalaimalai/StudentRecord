@@ -10,12 +10,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.studentrecord.model.Student;
 import com.studentrecord.exception.CustomException.AccessFailedException;
 
 /**
- * <h1>StudentRecordDAOImpl</h1>
+ * StudentRecordDAOImpl.
  * 
  * @author ThalaimalaiPandiyanT
  *
@@ -25,13 +24,13 @@ public class StudentDAOImpl implements StudentDAO {
 	/**
 	 * Insert the Admin informations.
 	 * 
-	 * @param Admin name
-	 * @param Admin email
-	 * @param Admin password
+	 * @param adminName
+	 * @param adminEmail
+	 * @param password
 	 * 
 	 */
 	public boolean insertAdminDetails(final String adminName, final String adminEmail, final String password) {
-		final String insertQuery = "insert into admin_records values(?,?,?)";
+		final String insertQuery = "insert into admin_records values(?, ?, ?)";
 
 		try (Connection connection = DatabaseConnection.getConnection();
 				PreparedStatement statement = connection.prepareStatement(insertQuery);) {
@@ -45,11 +44,31 @@ public class StudentDAOImpl implements StudentDAO {
 		}
 	}
 
+	public boolean loginAdmin(final String adminEmail, final String password) {
+		final String adminLogin = "select adminemail, password from admin_records where BINARY adminemail = ? and BINARY password = ? ";
+
+		try (Connection connection = DatabaseConnection.getConnection();
+				PreparedStatement preparestatement = connection.prepareStatement(adminLogin);) {
+			preparestatement.setString(1, adminEmail);
+			preparestatement.setString(2, password);
+
+			try (ResultSet resultset = preparestatement.executeQuery();) {
+
+				while (resultset.next()) {
+					return true;
+				}
+			}
+		} catch (SQLException exception) {
+			throw new AccessFailedException("Database Access Denied");
+		}
+		return false;
+	}
+
 	/**
 	 * Student login.
 	 * 
-	 * @param Rollnumber
-	 * @param Student    name
+	 * @param rollNumber
+	 * @param studentName
 	 */
 	public boolean studentLogin(final String rollNumber, final String studentName) {
 		final String studentLogin = "select rollnumber, name from student_records where rollnumber = ? and name = ?";
@@ -74,13 +93,15 @@ public class StudentDAOImpl implements StudentDAO {
 	/**
 	 * Insert student details.
 	 * 
-	 * @param Student student
+	 * @param student
 	 */
 	public boolean insertStudentDetails(final Student student) {
-		final String insertQuery = "insert into student_records values(?,?,?,?,?,?,?)";
+		final String insertQuery = "insert into student_records values(?, ?, ?, ?, ?, ?, ?)";
+		final String query = "insert into marks values(?, ?)";
 
 		try (Connection connection = DatabaseConnection.getConnection();
-				PreparedStatement preparestatement = connection.prepareStatement(insertQuery);) {
+				PreparedStatement preparestatement = connection.prepareStatement(insertQuery);
+				PreparedStatement preparestatement1 = connection.prepareStatement(query);) {
 
 			preparestatement.setString(1, student.getRollNumber());
 			preparestatement.setString(2, student.getName());
@@ -90,7 +111,12 @@ public class StudentDAOImpl implements StudentDAO {
 			preparestatement.setDate(6, student.getDateOfBirth());
 			preparestatement.setString(7, student.getAddress());
 
-			return preparestatement.executeUpdate() > 0;
+			preparestatement.executeUpdate();
+
+			preparestatement1.setString(1, student.getRollNumber());
+			preparestatement1.setString(2, student.getGrade());
+
+			return preparestatement1.executeUpdate() > 0;
 		} catch (SQLException exception) {
 			throw new AccessFailedException("Database Access Denied");
 		}
@@ -99,10 +125,11 @@ public class StudentDAOImpl implements StudentDAO {
 	/**
 	 * Get student records.
 	 * 
-	 * @param Rollnumber
+	 * @param rollNumber
 	 */
 	public Student selectStudentDetail(final String rollNumber) {
-		final String getQuery = "select * from student_records where rollnumber = ?";
+		final String getQuery = "select student_records.*, marks.* from student_records left join marks on "
+				+ "student_records.rollnumber= marks.rollnumber where student_records.rollnumber = ?";
 		Student student = null;
 
 		try (Connection connection = DatabaseConnection.getConnection();
@@ -118,8 +145,10 @@ public class StudentDAOImpl implements StudentDAO {
 					String gender = resultset.getString(5);
 					Date dateOfBirth = resultset.getDate(6);
 					String address = resultset.getString(7);
+					String grade = resultset.getString(9);
 
-					student = new Student(rollNumber, studentName, departmentName, email, gender, dateOfBirth, address);
+					student = new Student(rollNumber, studentName, departmentName, email, gender, dateOfBirth, address,
+							grade);
 				}
 			}
 		} catch (SQLException exception) {
@@ -131,10 +160,11 @@ public class StudentDAOImpl implements StudentDAO {
 	/**
 	 * Delete student records.
 	 * 
-	 * @param Rollnumber
+	 * @param rollNumber
 	 */
 	public boolean deleteStudentDetails(final String rollNumber) {
-		final String deleteQuery = "DELETE from student_records where rollnumber = ?";
+		final String deleteQuery = "DELETE student_records, marks from student_records left join marks on "
+				+ "student_records.rollnumber= marks.rollnumber where student_records.rollnumber = ?";
 
 		try (Connection connection = DatabaseConnection.getConnection();
 				PreparedStatement preparestatement = connection.prepareStatement(deleteQuery);) {
@@ -149,11 +179,12 @@ public class StudentDAOImpl implements StudentDAO {
 	/**
 	 * Update student details.
 	 * 
-	 * @param Student student
+	 * @param student
 	 */
 	public boolean updateStudentDetails(final Student student) {
-		final String updateQuery = "UPDATE student_records SET name = ?, departmentname = ?, email = ?, gender = ?, "
-				+ "dateofbirth = ?, address = ? where rollnumber = ?";
+		final String updateQuery = "UPDATE student_records left join marks on student_records.rollnumber= marks.rollnumber "
+				+ "SET student_records.name = ?, student_records.departmentname = ?, student_records.email = ?, student_records.gender = ?,"
+				+ " student_records.dateofbirth = ?, student_records.address = ?, marks.grade = ? where student_records.rollnumber = ?";
 
 		try (Connection connection = DatabaseConnection.getConnection();
 				PreparedStatement preparestatement = connection.prepareStatement(updateQuery);) {
@@ -164,7 +195,8 @@ public class StudentDAOImpl implements StudentDAO {
 			preparestatement.setString(4, student.getGender());
 			preparestatement.setDate(5, student.getDateOfBirth());
 			preparestatement.setString(6, student.getAddress());
-			preparestatement.setString(7, student.getRollNumber());
+			preparestatement.setString(7, student.getGrade());
+			preparestatement.setString(8, student.getRollNumber());
 
 			return preparestatement.executeUpdate() > 0;
 		} catch (SQLException exception) {
@@ -177,14 +209,14 @@ public class StudentDAOImpl implements StudentDAO {
 	 */
 	public List<String> selectAdminEmail() {
 		final List<String> emailList = new ArrayList<String>();
-		final String getAllEmail = "select * from admin_records";
+		final String getAllEmail = "select adminemail from admin_records";
 
 		try (Connection connection = DatabaseConnection.getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultset = statement.executeQuery(getAllEmail);) {
 
 			while (resultset.next()) {
-				String email = resultset.getString(2);
+				String email = resultset.getString(1);
 				emailList.add(email);
 			}
 		} catch (Exception exception) {
@@ -197,7 +229,7 @@ public class StudentDAOImpl implements StudentDAO {
 	 * Get all student records in a map.
 	 */
 	public Map<String, Student> getAllStudents() {
-		final String getstudent = "Select * From student_records";
+		final String getstudent = "select student_records.*, marks.grade from student_records left join marks on student_records.rollnumber= marks.rollnumber";
 		final Map<String, Student> studentList = new HashMap<String, Student>();
 
 		try (Connection connection = DatabaseConnection.getConnection();
@@ -207,8 +239,8 @@ public class StudentDAOImpl implements StudentDAO {
 			while (resultset.next()) {
 				Student student = new Student(resultset.getString("rollnumber"), resultset.getString("name"),
 						resultset.getString("departmentname"), resultset.getString("email"),
-						resultset.getString("gender"), resultset.getDate("dateofbirth"),
-						resultset.getString("address"));
+						resultset.getString("gender"), resultset.getDate("dateofbirth"), resultset.getString("address"),
+						resultset.getString("grade"));
 
 				studentList.put(student.getRollNumber(), student);
 			}

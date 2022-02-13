@@ -4,13 +4,22 @@ import java.time.LocalDate;
 import com.studentrecord.exception.CustomException.DateNotValidException;
 
 /**
- * <h1>StudentRecordServiceImpl</h>
+ * StudentRecordServiceImpl.
  * 
  * @author ThalaimalaiPandiyanT
  *
  */
 public class StudentServiceImpl implements StudentService {
-	
+
+	public boolean validateChoice(String choice) {
+
+		if (!choice.matches("[1-5]")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	/**
 	 * Validate Name.
 	 * 
@@ -18,9 +27,7 @@ public class StudentServiceImpl implements StudentService {
 	 */
 	public boolean validateName(final String name) {
 
-		if (!name.matches("^.*[A-Z][a-zA-Z+\\s]*$")) {
-			System.out.println("Please Enter Valid Name");
-			
+		if (!name.matches("^[A-Z][A-Za-z+\\s]*$")) {
 			return false;
 		} else {
 			return true;
@@ -30,13 +37,11 @@ public class StudentServiceImpl implements StudentService {
 	/**
 	 * Validate Email.
 	 * 
-	 * @param Email
+	 * @param email
 	 */
 	public boolean validateEmail(final String email) {
 
 		if (!email.matches("^[a-zA-Z0-9+_.-]+@[a-zA-Z]+.[a-z]+$")) {
-			System.out.println("Please Enter Valid Email");
-
 			return false;
 		} else {
 			return true;
@@ -46,13 +51,11 @@ public class StudentServiceImpl implements StudentService {
 	/**
 	 * Validate Password.
 	 * 
-	 * @param Password
+	 * @param password
 	 */
 	public boolean validateAdminPassword(final String password) {
 
 		if (!password.matches("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}")) {
-			System.out.println("Please Enter Valid Password");
-			
 			return false;
 		} else {
 			return true;
@@ -62,13 +65,11 @@ public class StudentServiceImpl implements StudentService {
 	/**
 	 * Validate Rollnumber.
 	 * 
-	 * @param name
+	 * @param rollNumber
 	 */
 	public boolean validateStudentRollNumber(final String rollNumber) {
 
 		if (!(rollNumber.matches("[0-9]{3,15}"))) {
-			System.out.println("Please Enter Valid Roll Number");
-
 			return false;
 		} else {
 			return true;
@@ -78,13 +79,13 @@ public class StudentServiceImpl implements StudentService {
 	/**
 	 * Validate Department Name.
 	 * 
-	 * @param Department name
+	 * @param departmentName
 	 */
 	public boolean validateDepartmentName(final String departmentName) {
 
-		if (!departmentName.matches("^[a-zA-Z\\s]*$")) {
-			System.out.println("Please Enter Valid Department");
-			
+		if (!("ECE".equalsIgnoreCase(departmentName) || "EEE".equalsIgnoreCase(departmentName)
+				|| "MECH".equalsIgnoreCase(departmentName) || "CSE".equalsIgnoreCase(departmentName)
+				|| "CIVIL".equalsIgnoreCase(departmentName))) {
 			return false;
 		} else {
 			return true;
@@ -94,13 +95,12 @@ public class StudentServiceImpl implements StudentService {
 	/**
 	 * Validate Gender.
 	 * 
-	 * @param Gender
+	 * @param gender
 	 */
 	public boolean validateGender(final String gender) {
 
-		if (!(gender.matches("^M(ale)?$|^F(emale)?$"))) {
-			System.out.println("Please Enter Valid Gender");
-
+		if (!("MALE".equalsIgnoreCase(gender) || "FEMALE".equalsIgnoreCase(gender)
+				|| "OTHERS".equalsIgnoreCase(gender))) {
 			return false;
 		} else {
 			return true;
@@ -110,15 +110,16 @@ public class StudentServiceImpl implements StudentService {
 	/**
 	 * Validate Date-of-Birth.
 	 * 
-	 * @param DOB
+	 * @param dateOfBirth
 	 */
 	public boolean validateDOB(final String dateOfBirth) {
 
 		try {
 			final LocalDate dateParse = LocalDate.parse(dateOfBirth);
 			final LocalDate todayDate = LocalDate.now();
-			
-			if (todayDate.isAfter(dateParse)) {
+			LocalDate particularDate = LocalDate.of(1980, 12, 31);
+
+			if ((todayDate.isAfter(dateParse)) && (dateParse.isAfter(particularDate))) {
 				return true;
 			} else {
 				return false;
@@ -131,13 +132,21 @@ public class StudentServiceImpl implements StudentService {
 	/**
 	 * Validate Address.
 	 * 
-	 * @param Address
+	 * @param address
 	 */
 	public boolean validateAddress(final String address) {
 
 		if (!address.matches(".*([a-zA-Z].*[0-9]|[0-9].*[a-zA-Z]).*")) {
-			System.out.println("Please Enter Valid Address");
+			return false;
+		} else {
+			return true;
+		}
+	}
 
+	public boolean validateGrade(final String grade) {
+
+		if (!("A".equalsIgnoreCase(grade) || "A+".equalsIgnoreCase(grade) || "O".equalsIgnoreCase(grade)
+				|| "B".equalsIgnoreCase(grade) || "U".equalsIgnoreCase(grade))) {
 			return false;
 		} else {
 			return true;
