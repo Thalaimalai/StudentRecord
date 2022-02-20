@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.studentrecord.model.Student;
-import com.studentrecord.exception.CustomException.AccessFailedException;
+import com.studentrecord.exception.CustomException.SQLSyntaxErrorException;;
 
 /**
  * StudentRecordDAOImpl.
@@ -27,7 +27,6 @@ public class StudentDAOImpl implements StudentDAO {
 	 * @param adminName
 	 * @param adminEmail
 	 * @param password
-	 * 
 	 */
 	public boolean insertAdminDetails(final String adminName, final String adminEmail, final String password) {
 		final String insertQuery = "insert into admin_records values(?, ?, ?)";
@@ -40,10 +39,16 @@ public class StudentDAOImpl implements StudentDAO {
 
 			return statement.executeUpdate() > 0;
 		} catch (SQLException exception) {
-			throw new AccessFailedException("Database Access Denied");
+			throw new SQLSyntaxErrorException("Database Access Denied");
 		}
 	}
 
+	/**
+	 * Admin login.
+	 * 
+	 * @param adminEmail
+	 * @param password
+	 */
 	public boolean loginAdmin(final String adminEmail, final String password) {
 		final String adminLogin = "select adminemail, password from admin_records where BINARY adminemail = ? and BINARY password = ? ";
 
@@ -59,7 +64,7 @@ public class StudentDAOImpl implements StudentDAO {
 				}
 			}
 		} catch (SQLException exception) {
-			throw new AccessFailedException("Database Access Denied");
+			throw new SQLSyntaxErrorException("Database Access Denied");
 		}
 		return false;
 	}
@@ -85,7 +90,7 @@ public class StudentDAOImpl implements StudentDAO {
 				}
 			}
 		} catch (SQLException exception) {
-			throw new AccessFailedException("Database Access Denied");
+			throw new SQLSyntaxErrorException("Database Access Denied");
 		}
 		return false;
 	}
@@ -96,8 +101,8 @@ public class StudentDAOImpl implements StudentDAO {
 	 * @param student
 	 */
 	public boolean insertStudentDetails(final Student student) {
-		final String insertQuery = "insert into student_records values(?, ?, ?, ?, ?, ?, ?)";
-		final String query = "insert into marks values(?, ?)";
+		final String insertQuery = "insert into student_records values (?, ?, ?, ?, ?, ?, ?)";
+		final String query = "insert into marks (rollnumber, grade) values (?, ?)";
 
 		try (Connection connection = DatabaseConnection.getConnection();
 				PreparedStatement preparestatement = connection.prepareStatement(insertQuery);
@@ -118,7 +123,7 @@ public class StudentDAOImpl implements StudentDAO {
 
 			return preparestatement1.executeUpdate() > 0;
 		} catch (SQLException exception) {
-			throw new AccessFailedException("Database Access Denied");
+			throw new SQLSyntaxErrorException("Database Access Denied");
 		}
 	}
 
@@ -128,8 +133,7 @@ public class StudentDAOImpl implements StudentDAO {
 	 * @param rollNumber
 	 */
 	public Student selectStudentDetail(final String rollNumber) {
-		final String getQuery = "select student_records.*, marks.* from student_records left join marks on "
-				+ "student_records.rollnumber= marks.rollnumber where student_records.rollnumber = ?";
+		final String getQuery = "select student_records.*, marks.* from student_records left join marks on student_records.rollnumber = marks.rollnumber where student_records.rollnumber = ?";
 		Student student = null;
 
 		try (Connection connection = DatabaseConnection.getConnection();
@@ -145,14 +149,14 @@ public class StudentDAOImpl implements StudentDAO {
 					String gender = resultset.getString(5);
 					Date dateOfBirth = resultset.getDate(6);
 					String address = resultset.getString(7);
-					String grade = resultset.getString(9);
+					String grade = resultset.getString(10);
 
 					student = new Student(rollNumber, studentName, departmentName, email, gender, dateOfBirth, address,
 							grade);
 				}
 			}
 		} catch (SQLException exception) {
-			throw new AccessFailedException("Database Access Failed");
+			throw new SQLSyntaxErrorException("Database Access Failed");
 		}
 		return student;
 	}
@@ -163,8 +167,7 @@ public class StudentDAOImpl implements StudentDAO {
 	 * @param rollNumber
 	 */
 	public boolean deleteStudentDetails(final String rollNumber) {
-		final String deleteQuery = "DELETE student_records, marks from student_records left join marks on "
-				+ "student_records.rollnumber= marks.rollnumber where student_records.rollnumber = ?";
+		final String deleteQuery = "DELETE student_records, marks from student_records left join marks on student_records.rollnumber = marks.rollnumber where student_records.rollnumber = ?";
 
 		try (Connection connection = DatabaseConnection.getConnection();
 				PreparedStatement preparestatement = connection.prepareStatement(deleteQuery);) {
@@ -172,7 +175,7 @@ public class StudentDAOImpl implements StudentDAO {
 
 			return preparestatement.executeUpdate() > 0;
 		} catch (SQLException exception) {
-			throw new AccessFailedException("Database Access Denied");
+			throw new SQLSyntaxErrorException("Database Access Denied");
 		}
 	}
 
@@ -182,9 +185,7 @@ public class StudentDAOImpl implements StudentDAO {
 	 * @param student
 	 */
 	public boolean updateStudentDetails(final Student student) {
-		final String updateQuery = "UPDATE student_records left join marks on student_records.rollnumber= marks.rollnumber "
-				+ "SET student_records.name = ?, student_records.departmentname = ?, student_records.email = ?, student_records.gender = ?,"
-				+ " student_records.dateofbirth = ?, student_records.address = ?, marks.grade = ? where student_records.rollnumber = ?";
+		final String updateQuery = "UPDATE student_records left join marks on student_records.rollnumber = marks.rollnumber SET student_records.name = ?, student_records.departmentname = ?, student_records.email = ?, student_records.gender = ?, student_records.dateofbirth = ?, student_records.address = ?, marks.grade = ? where student_records.rollnumber = ?";
 
 		try (Connection connection = DatabaseConnection.getConnection();
 				PreparedStatement preparestatement = connection.prepareStatement(updateQuery);) {
@@ -200,27 +201,27 @@ public class StudentDAOImpl implements StudentDAO {
 
 			return preparestatement.executeUpdate() > 0;
 		} catch (SQLException exception) {
-			throw new AccessFailedException("Database Access Denied");
+			throw new SQLSyntaxErrorException("Database Access Denied");
 		}
 	}
 
 	/**
 	 * List to add all admin emails.
 	 */
-	public List<String> selectAdminEmail() {
+	public List<String> getAdminEmail() {
 		final List<String> emailList = new ArrayList<String>();
-		final String getAllEmail = "select adminemail from admin_records";
+		final String getEmail = "select adminemail from admin_records";
 
 		try (Connection connection = DatabaseConnection.getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultset = statement.executeQuery(getAllEmail);) {
+				ResultSet resultset = statement.executeQuery(getEmail);) {
 
 			while (resultset.next()) {
 				String email = resultset.getString(1);
 				emailList.add(email);
 			}
-		} catch (Exception exception) {
-			System.out.println(exception);
+		} catch (SQLException exception) {
+			throw new SQLSyntaxErrorException("Database Access Denied");
 		}
 		return emailList;
 	}
@@ -229,7 +230,7 @@ public class StudentDAOImpl implements StudentDAO {
 	 * Get all student records in a map.
 	 */
 	public Map<String, Student> getAllStudents() {
-		final String getstudent = "select student_records.*, marks.grade from student_records left join marks on student_records.rollnumber= marks.rollnumber";
+		final String getstudent = "select student_records.*, marks.grade from student_records left join marks on student_records.rollnumber = marks.rollnumber";
 		final Map<String, Student> studentList = new HashMap<String, Student>();
 
 		try (Connection connection = DatabaseConnection.getConnection();
@@ -245,7 +246,7 @@ public class StudentDAOImpl implements StudentDAO {
 				studentList.put(student.getRollNumber(), student);
 			}
 		} catch (SQLException e) {
-			throw new AccessFailedException("Database Access Failed");
+			throw new SQLSyntaxErrorException("Database Access Failed");
 		}
 		return studentList;
 	}

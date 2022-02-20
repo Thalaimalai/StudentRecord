@@ -5,6 +5,7 @@ import java.util.Map;
 import com.studentrecord.model.Student;
 
 public interface StudentDAO {
+	
 	boolean studentLogin(final String rollNumber, final String studentName);
 
 	boolean insertStudentDetails(final Student student);
@@ -17,7 +18,7 @@ public interface StudentDAO {
 	
 	boolean insertAdminDetails(final String adminName, final String adminEmail, final String password);	
 	
-	List<String> selectAdminEmail();
+	List<String> getAdminEmail();
 
 	Map<String, Student> getAllStudents();
 

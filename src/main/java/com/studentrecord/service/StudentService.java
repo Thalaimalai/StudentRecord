@@ -1,6 +1,13 @@
 package com.studentrecord.service;
 
+/**
+ * Interface to validate details.
+ * 
+ * @author ThalaimalaiPandiyanT
+ *
+ */
 public interface StudentService {
+	
 	boolean validateName(final String name);
 
 	boolean validateEmail(final String email);

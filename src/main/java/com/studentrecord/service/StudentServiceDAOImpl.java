@@ -11,9 +11,9 @@ import com.studentrecord.model.Student;
  * @author ThalaimalaiPandiyanT
  *
  */
-public class StudentServiceDAOImpl implements StudentServiceDAO{
+public class StudentServiceDAOImpl implements StudentServiceDAO {
 
-	private final StudentDAO STUDENTRECORD_DAO = new StudentDAOImpl();
+	private static final StudentDAO STUDENTRECORD_DAO = new StudentDAOImpl();
 
 	/**
 	 * Check the existing admin emails.
@@ -24,10 +24,9 @@ public class StudentServiceDAOImpl implements StudentServiceDAO{
 	 */
 	public boolean insertAdminDetail(final String adminName, final String adminEmail, final String password) {
 
-		if (!STUDENTRECORD_DAO.selectAdminEmail().contains(adminEmail)) {
-			final boolean isInserted = STUDENTRECORD_DAO.insertAdminDetails(adminName, adminEmail, password);
+		if (!STUDENTRECORD_DAO.getAdminEmail().contains(adminEmail)) {
 
-			if (isInserted) {
+			if (STUDENTRECORD_DAO.insertAdminDetails(adminName, adminEmail, password)) {
 				return true;
 			}
 		}
@@ -41,9 +40,8 @@ public class StudentServiceDAOImpl implements StudentServiceDAO{
 	 * @param password
 	 */
 	public boolean validateAdminDetail(final String adminEmail, final String password) {
-		final boolean isLogin = STUDENTRECORD_DAO.loginAdmin(adminEmail, password);
 
-		if (isLogin) {
+		if (STUDENTRECORD_DAO.loginAdmin(adminEmail, password)) {
 			return true;
 		} else {
 			throw new RecordNotfoundException("Record Not Found");
@@ -57,9 +55,8 @@ public class StudentServiceDAOImpl implements StudentServiceDAO{
 	 * @param studentName
 	 */
 	public boolean studentLogin(final String rollNumber, final String studentName) {
-		final boolean isLogin = STUDENTRECORD_DAO.studentLogin(rollNumber, studentName);
 
-		if (isLogin) {
+		if (STUDENTRECORD_DAO.studentLogin(rollNumber, studentName)) {
 			return true;
 		} else {
 			throw new RecordNotfoundException("Record Not Found");
@@ -74,9 +71,8 @@ public class StudentServiceDAOImpl implements StudentServiceDAO{
 	public boolean insertStudentDetails(final Student student) {
 
 		if (!STUDENTRECORD_DAO.getAllStudents().containsKey(student.getRollNumber())) {
-			final boolean isInserted = STUDENTRECORD_DAO.insertStudentDetails(student);
 
-			if (isInserted) {
+			if (STUDENTRECORD_DAO.insertStudentDetails(student)) {
 				return true;
 			}
 		}
@@ -89,9 +85,8 @@ public class StudentServiceDAOImpl implements StudentServiceDAO{
 	 * @param rollNumber
 	 */
 	public boolean deleteStudentDetails(final String rollNumber) {
-		final boolean isRemoved = STUDENTRECORD_DAO.deleteStudentDetails(rollNumber);
 
-		if (isRemoved) {
+		if (STUDENTRECORD_DAO.deleteStudentDetails(rollNumber)) {
 			return true;
 		}
 		throw new RecordNotfoundException("Record Not Found");
@@ -103,9 +98,8 @@ public class StudentServiceDAOImpl implements StudentServiceDAO{
 	 * @param student
 	 */
 	public boolean updateStudentDetails(final Student student) {
-		final boolean isUpdated = STUDENTRECORD_DAO.updateStudentDetails(student);
 
-		if (isUpdated) {
+		if (STUDENTRECORD_DAO.updateStudentDetails(student)) {
 			return true;
 		}
 		throw new RecordNotfoundException("Record Not Found");
@@ -125,12 +119,26 @@ public class StudentServiceDAOImpl implements StudentServiceDAO{
 		}
 	}
 
+	/**
+	 * Check roll number.
+	 * 
+	 * @param rollNumber
+	 */
 	public boolean checkRollNumber(final String rollNumber) {
-		final boolean isRollNumberPresent = STUDENTRECORD_DAO.getAllStudents().containsKey(rollNumber);
-		
-		if (!isRollNumberPresent) {
-            return true;
-        }
-        throw new RollNumberAlreadyExistException("The Given Rollnumber Already Exist\n Re-Enter RollNo ");
+
+		if (!STUDENTRECORD_DAO.getAllStudents().containsKey(rollNumber)) {
+			return true;
+		}
+		throw new RollNumberAlreadyExistException("The Given Rollnumber Already Exist\n Re-Enter RollNo ");
+	}
+	
+	/**
+	 * Check rollnumber for update.
+	 */
+	public boolean checkUpdate(String rollNumber) {
+		if (STUDENTRECORD_DAO.getAllStudents().containsKey(rollNumber)) {
+			return true;
+		}
+		throw new RecordNotfoundException("Record Not Found");
 	}
 }

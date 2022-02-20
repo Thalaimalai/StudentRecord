@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import com.studentrecord.view.StudentRecordInformation;
+import com.studentrecord.view.StudentView;
 
 /**
  * StudentRecordManagement. The Student Record Management in which student can
@@ -17,8 +17,8 @@ import com.studentrecord.view.StudentRecordInformation;
  * @author ThalaimalaiPandiyanT
  *
  */
-public class StudentRecordMain {
-
+public class StudentManagement {
+	
 	/**
 	 * Illustrates the login and signup for users.
 	 * 
@@ -30,28 +30,31 @@ public class StudentRecordMain {
 		final Properties properties = new Properties();
 		properties.load(new FileInputStream("log4j.properties"));
 		PropertyConfigurator.configure(properties);
-		StudentRecordMain.selectChoice();
+		StudentManagement.selectChoice();
 	}
 
+	/**
+	 * Select choice to login and signup.
+	 */
 	public static void selectChoice() {
 
 		do {
-			final Logger logger = Logger.getLogger(StudentRecordMain.class);
-			logger.info("STUDENT RECORD MANAGEMENT SYSTEM\n1.Admin Login\n2.Admin Signup\n3.StudentLogin\n4.Exit");
-			final int choice = Integer.parseInt(StudentRecordInformation.getChoice());
+			final Logger LOGGER = Logger.getLogger(StudentManagement.class);
+			LOGGER.info("STUDENT RECORD MANAGEMENT SYSTEM\n1.Admin Login\n2.Admin Signup\n3.StudentLogin\n4.Exit");
+			final int choice = Integer.parseInt(StudentView.getChoice());
 
 			switch (choice) {
 			case 1:
-				StudentRecordInformation.adminLogin();
+				StudentView.adminLogin();
 				break;
 			case 2:
-				StudentRecordInformation.adminSignup();
+				StudentView.adminSignup();
 				break;
 			case 3:
-				StudentRecordInformation.studentLogin();
+				StudentView.studentLogin();
 				break;
 			default:
-				StudentRecordInformation.SCANNER.close();
+				StudentView.SCANNER.close();
 				System.exit(0);
 			}
 		} while (true);

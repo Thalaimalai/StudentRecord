@@ -3,6 +3,7 @@ package com.studentrecord.model;
 import java.sql.Date;
 
 public class Student {
+	
 	private String studentRollNumber;
 	private String studentName;
 	private String departmentName;

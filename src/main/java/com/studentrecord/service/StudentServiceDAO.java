@@ -2,7 +2,14 @@ package com.studentrecord.service;
 
 import com.studentrecord.model.Student;
 
+/**
+ * Interface to validate details. 
+ * 
+ * @author ThalaimalaiPandiyanT
+ *
+ */
 public interface StudentServiceDAO {
+	
 	boolean insertAdminDetail(final String adminName, final String adminEmail, final String password);
 
 	boolean validateAdminDetail(final String adminEmail, final String password);
@@ -18,4 +25,6 @@ public interface StudentServiceDAO {
 	boolean checkRollNumber(final String rollNumber);
 
 	Student selectStudentDetail(final String rollNumber);
+
+	boolean checkUpdate(String rollNumber);
 }
